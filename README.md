@@ -67,3 +67,5 @@ Nx comes with local caching already built-in (check your `nx.json`). On CI you m
 ## Badges
 
 [![CI](https://github.com/peterjokumsen/helderberg-pirates-baseball/actions/workflows/nx-ci.yml/badge.svg)](https://github.com/peterjokumsen/helderberg-pirates-baseball/actions/workflows/nx-ci.yml) [![codecov](https://codecov.io/gh/peterjokumsen/helderberg-pirates-baseball/branch/main/graph/badge.svg)](https://codecov.io/gh/peterjokumsen/helderberg-pirates-baseball)
+
+![renovate](https://img.shields.io/badge/maintaied%20with-renovate-blue?logo=renovatebot)
