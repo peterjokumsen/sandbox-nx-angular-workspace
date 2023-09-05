@@ -4,7 +4,8 @@
   "license": "MIT",
   "scripts": {
     "build": "nx run client-app:build",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "nx": "nx"
   },
   "private": true,
   "dependencies": {

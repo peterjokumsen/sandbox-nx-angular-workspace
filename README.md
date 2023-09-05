@@ -63,3 +63,7 @@ Nx comes with local caching already built-in (check your `nx.json`). On CI you m
 ## Contributors
 
 [![contributors](https://contrib.rocks/image?repo=peterjokumsen/helderberg-pirates-baseball)](https://github.com/peterjokumsen/helderberg-pirates-baseball/graphs/contributors)
+
+## Badges
+
+[![CI](https://github.com/peterjokumsen/helderberg-pirates-baseball/actions/workflows/nx-ci.yml/badge.svg)](https://github.com/peterjokumsen/helderberg-pirates-baseball/actions/workflows/nx-ci.yml)
