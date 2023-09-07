@@ -52,7 +52,6 @@ jobs:
 
   test:
     name: Test All
-    needs: agents # wait for agents to run first.
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -75,7 +74,7 @@ jobs:
         run: npm ci
 
       - name: Run all tests for workspace
-        run: npx nx run-many --targets=test --parallel --max-parallel=3 --ci
+        run: npx nx run-many --target=test --parallel --max-parallel=3 --ci
 
       - name: Codecov
         uses: codecov/codecov-action@v3.1.0
