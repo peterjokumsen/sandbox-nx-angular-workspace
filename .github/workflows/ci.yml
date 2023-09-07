@@ -12,8 +12,9 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  main:
+  main_pull_request:
     name: Nx Cloud - Main Job
+    if: github.event_name == 'pull_request'
     uses: nrwl/ci/.github/workflows/nx-cloud-main.yml@v0.13.0
     with:
       main-branch-name: main
@@ -27,6 +28,22 @@ jobs:
         npx nx affected --target=test --parallel=3 --base=origin/main --ci --code-coverage
         npx nx affected --target=build --parallel=3 --base=origin/main
 
+  main_push:
+    name: Nx Cloud - Main Job
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+    uses: nrwl/ci/.github/workflows/nx-cloud-main.yml@v0.13.0
+    with:
+      main-branch-name: main
+      number-of-agents: 3
+      init-commands: |
+        npx nx-cloud start-ci-run --stop-agents-after="build" --agent-count=3
+      parallel-commands: |
+        npx nx-cloud record -- npx nx format:check
+      parallel-commands-on-agents: |
+        npx nx run-many --target=lint --parallel=3 --base=origin/main
+        npx nx run-many --target=test --parallel=3 --base=origin/main --ci --code-coverage
+        npx nx run-many --target=build --parallel=3 --base=origin/main
+
   agents:
     name: Nx Cloud - Agents
     uses: nrwl/ci/.github/workflows/nx-cloud-agents.yml@v0.13.0
@@ -35,6 +52,7 @@ jobs:
 
   test:
     name: Test All
+    needs: agents # wait for agents to run first.
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
