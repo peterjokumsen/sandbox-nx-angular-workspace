@@ -13,7 +13,7 @@ concurrency:
 
 jobs:
   main_pull_request:
-    name: Nx Cloud - Affected
+    name: '[Main] Nx Cloud - Affected'
     if: github.event_name == 'pull_request'
     uses: nrwl/ci/.github/workflows/nx-cloud-main.yml@v0.13.0
     with:
@@ -29,7 +29,7 @@ jobs:
         npx nx affected --target=build --parallel=3 --base=origin/main
 
   main_push:
-    name: Nx Cloud - All
+    name: '[Main] Nx Cloud - All'
     if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
     uses: nrwl/ci/.github/workflows/nx-cloud-main.yml@v0.13.0
     with:
@@ -45,7 +45,7 @@ jobs:
         npx nx run-many --target=build --parallel=3
 
   agents:
-    name: Nx Cloud - Agents
+    name: '[Agent] Nx Cloud'
     uses: nrwl/ci/.github/workflows/nx-cloud-agents.yml@v0.13.0
     with:
       number-of-agents: 3
