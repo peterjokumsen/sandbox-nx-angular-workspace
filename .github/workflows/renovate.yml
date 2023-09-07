@@ -1,8 +1,8 @@
 name: Renovate
 on:
   workflow_dispatch:
-  schedule:
-    - cron: '0 * * * *'
+#  schedule:
+#    - cron: '0 * * * *'
 jobs:
   renovate:
     name: Renovate
