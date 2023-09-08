@@ -30,7 +30,7 @@ jobs:
 
   main_push:
     name: '[Main] Nx Cloud - All'
-    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+    if: github.event_name != 'pull_request'
     uses: nrwl/ci/.github/workflows/nx-cloud-main.yml@v0.13.0
     with:
       main-branch-name: main
