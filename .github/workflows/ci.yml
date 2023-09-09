@@ -58,9 +58,20 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Use the package manager cache if available
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-
+
+      - name: Install dependencies
+        run: npm ci
+
       - name: IsAffected
         id: is_affected
-        uses: chill-viking/is-nx-affected@v0.0.1
+        uses: chill-viking/is-nx-affected@v0.0.2
         with:
           project: client-app
           base: origin/main
