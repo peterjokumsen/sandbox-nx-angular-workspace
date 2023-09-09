@@ -5,8 +5,8 @@ on:
     branches:
       - main
       - renovate-github/**
+      - test-affected
   pull_request:
-  workflow_dispatch:
 
 concurrency:
   group: ${{ github.ref }}-${{ github.workflow }}
