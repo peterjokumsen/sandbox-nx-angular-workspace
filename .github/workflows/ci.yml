@@ -60,7 +60,7 @@ jobs:
 
       - name: IsAffected
         id: is_affected
-        uses: chill-viking/is-nx-affected-action@v0.0.1
+        uses: chill-viking/is-nx-affected@v0.0.1
         with:
           project: client-app
           base: origin/main
