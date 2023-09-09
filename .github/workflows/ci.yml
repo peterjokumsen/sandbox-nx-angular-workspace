@@ -6,6 +6,7 @@ on:
       - main
       - renovate-github/**
   pull_request:
+  workflow_dispatch:
 
 concurrency:
   group: ${{ github.ref }}-${{ github.workflow }}
@@ -49,6 +50,28 @@ jobs:
     uses: nrwl/ci/.github/workflows/nx-cloud-agents.yml@v0.13.0
     with:
       number-of-agents: 3
+
+  check_is_affected:
+    name: Testing GitHub Action
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: IsAffected
+        id: is_affected
+        uses: chill-viking/is-nx-affected-action@v0.0.1
+        with:
+          project: client-app
+          base: origin/main
+
+      - name: Echo
+        run: |
+          echo "Is Affected:"
+          echo "${{ steps.is_affected.outputs.is-affected }}"
+          echo
+          echo "Affected Projects:"
+          echo "${{ steps.is_affected.outputs.affected-projects }}"
 
   test:
     name: Test All
