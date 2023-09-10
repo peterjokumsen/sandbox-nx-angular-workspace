@@ -13,45 +13,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  main_pull_request:
-    name: '[Main] Nx Cloud - Affected'
-    if: github.event_name == 'pull_request'
-    uses: nrwl/ci/.github/workflows/nx-cloud-main.yml@v0.13.0
-    with:
-      main-branch-name: main
-      number-of-agents: 3
-      init-commands: |
-        npx nx-cloud start-ci-run --stop-agents-after="build" --agent-count=3
-      parallel-commands: |
-        npx nx-cloud record -- npx nx format:check
-      parallel-commands-on-agents: |
-        npx nx affected --target=lint --parallel=3 --base=origin/main
-        npx nx affected --target=test --parallel=3 --base=origin/main --ci --code-coverage
-        npx nx affected --target=build --parallel=3 --base=origin/main
-
-  main_push:
-    name: '[Main] Nx Cloud - All'
-    if: github.event_name != 'pull_request'
-    uses: nrwl/ci/.github/workflows/nx-cloud-main.yml@v0.13.0
-    with:
-      main-branch-name: main
-      number-of-agents: 3
-      init-commands: |
-        npx nx-cloud start-ci-run --stop-agents-after="build" --agent-count=3
-      parallel-commands: |
-        npx nx-cloud record -- npx nx format:check
-      parallel-commands-on-agents: |
-        npx nx run-many --target=lint --parallel=3
-        npx nx run-many --target=test --parallel=3 --ci --code-coverage
-        npx nx run-many --target=build --parallel=3
-
-  agents:
-    name: '[Agent] Nx Cloud'
-    uses: nrwl/ci/.github/workflows/nx-cloud-agents.yml@v0.13.0
-    with:
-      number-of-agents: 3
-
-  check_is_affected:
+  use_github_action:
     name: Testing GitHub Action
     runs-on: ubuntu-latest
     steps:
@@ -72,51 +34,18 @@ jobs:
         run: npm ci
 
       - name: IsAffected
-        id: is_affected
+        id: check_affected
         uses: chill-viking/is-nx-affected@v0.0.5
         with:
           project: client-app
           base: origin/main
 
-      - name: Echo
+      - name: Echo when affected
+        if: steps.check_affected.outputs.is-affected == 'true'
         run: |
-          echo "Is Affected:"
-          echo "${{ steps.is_affected.outputs.is-affected }}"
-          echo
-          echo "Affected Projects:"
-          echo "${{ steps.is_affected.outputs.affected-projects }}"
+          echo "hello"
 
-  test:
-    name: Test All
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-
-      # Set node/npm/yarn versions using volta
-      - uses: volta-cli/action@v4
-        with:
-          package-json-path: '${{ github.workspace }}/package.json'
-
-      - name: Use the package manager cache if available
-        uses: actions/cache@v3
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Run all tests for workspace
-        run: npx nx run-many --target=test --parallel --max-parallel=3 --ci
-
-      - name: Codecov
-        uses: codecov/codecov-action@v3.1.0
-        if: hashFiles('coverage/**/*') != ''
-        with:
-          fail_ci_if_error: true
-          verbose: true
-        env:
-          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+      - name: Echo when not affected
+        if: steps.check_affected.outputs.is-affected == 'false'
+        run: |
+          echo "goodbye"
