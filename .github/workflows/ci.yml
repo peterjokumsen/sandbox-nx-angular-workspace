@@ -37,7 +37,7 @@ jobs:
         id: check_affected
         uses: chill-viking/is-nx-affected@v0.0.5
         with:
-          project: client-app
+          project: clien-app
           base: origin/main
 
       - name: Echo when affected
