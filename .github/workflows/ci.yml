@@ -38,7 +38,7 @@ jobs:
         uses: chill-viking/is-nx-affected@v0.0.5
         with:
           project: clien-app
-          base: main
+          base: tag-1
 
       - name: Echo when affected
         if: steps.check_affected.outputs.is-affected == 'true'
