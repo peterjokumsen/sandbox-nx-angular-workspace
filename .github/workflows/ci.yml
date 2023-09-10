@@ -71,7 +71,7 @@ jobs:
 
       - name: IsAffected
         id: is_affected
-        uses: chill-viking/is-nx-affected@v0.0.3
+        uses: chill-viking/is-nx-affected@v0.0.4
         with:
           project: client-app
           base: origin/main
